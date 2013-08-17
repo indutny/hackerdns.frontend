@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HackerDNS</title>
+
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <!-- navbar -->
+    <div class="navbar">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">HackerDNS</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a id="btn-login" data-toggle="modal" href="#login">Login/Signup</a></li>
+            <li><a id="btn-logout" class="hidden" href="#">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!--/ navbar -->
+
+    <!-- main -->
+    <div class="main">
+      <div id="records-alert" class="alert alert-danger hidden">Failed to fetch records</div>
+
+      <form role="form" id="form-add-record">
+        <div class="alert alert-danger hidden">Invalid record</div>
+        <table id="records" class="table table-stripped hidden">
+          <tr>
+            <th>Subdomain/Domain</th>
+            <th>Type</th>
+            <th>Data</th>
+            <th>TTL</th>
+            <th></th>
+          </tr>
+          <tr class="new-record">
+            <td>
+              <input class="form-control" name="domain" placeholder="sub.example.com">
+            </td>
+            <td>
+              <select name="type" class="form-control" id="recordType">
+                <option>A</option>
+                <option>NS</option>
+                <option>CNAME</option>
+                <option>MX</option>
+                <option>TXT</option>
+              </select>
+            </td>
+            <td>
+              <input class="form-control" name="data" placeholder="1.2.3.4">
+            </td>
+            <td>
+              <input type="number" class="form-control" name="ttl" placeholder="9000">
+            </td>
+            <td>
+              <button type="submit" class="record-add btn btn-success">Add</button>
+            </td>
+          </tr>
+          <tr id="sample-record">
+            <td class="record-subdomain">example.com</td>
+            <td class="record-type">A</td>
+            <td class="record-data">1.2.3.4</td>
+            <td class="record-ttl">9000</td>
+            <td class="record-fns">
+              <button class="record-remove btn btn-danger" data-toggle="modal" data-target="#remove" type="button">Remove</button>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    <!--/ main -->
+  </div>
+
+  <!-- Modal login -->
+  <div class="modal fade" id="login">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Enter username and password</h4>
+        </div>
+        <form id="form-login" role="form">
+          <div class="modal-body">
+            <div class="alert alert-danger hidden">Incorrect username or password</div>
+            <div class="form-group">
+              <input class="form-control" name="user" placeholder="Username">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" name="password" placeholder="Password">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" id="btn-modal-login" class="btn btn-primary">Login/Signup</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--/ Modal login -->
+
+  <!-- Modal remove -->
+  <div class="modal fade" id="remove">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Are you sure want to remove this record?</h4>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger hidden">Failed to remove record</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" id="btn-modal-remove" class="btn btn-danger">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Modal remove -->
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/js/bootstrap.min.js"></script>
+  <script src="/javascripts/main.js"></script>
+</body>
+</html>
