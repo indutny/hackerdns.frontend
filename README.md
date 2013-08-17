@@ -1,4 +1,7 @@
-# Hackerdns frontend
+# HackerDNS frontend
+
+HackerDNS is a DNS server written in node.js, current repository is an ugly
+front-end for it.
 
 #### LICENSE
 
