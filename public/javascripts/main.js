@@ -92,8 +92,10 @@
   function stringToData(type, str) {
     if (type === 'A' || type === 'AAAA' || type === 'CNAME' || type === 'NS')
       return str;
-    if (type === 'MX')
-      return str.split(/\s+/g, 2);
+    if (type === 'MX') {
+      var data = str.split(/\s+/g, 2);
+      return [ data[0] | 0, data[1] ];
+    }
     if (type === 'TXT')
       return str.split(/\s*,\s*/g);
     return null;
