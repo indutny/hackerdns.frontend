@@ -109,7 +109,7 @@
     api('POST', '/dns', {
       domain: tld(domain),
       records: [{
-        sub: domain.replace(tld(domain), ''),
+        sub: domain.replace('.' + tld(domain), ''),
         type: type,
         data: stringToData(type, form.add.find('[name=data]').val()),
         ttl: form.add.find('[name=ttl]').val() | 0
