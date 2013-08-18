@@ -106,10 +106,11 @@
     form.add.find('input[type=submit]').button('loading');
     var type = form.add.find('[name=type]').val().toUpperCase();
     var domain = form.add.find('[name=domain]').val();
+    var domainTld = tld(domain);
     api('POST', '/dns', {
-      domain: tld(domain),
+      domain: domainTld,
       records: [{
-        sub: domain.replace('.' + tld(domain), ''),
+        sub: domain === domainTld ? '' : domain.replace('.' + domainTld, ''),
         type: type,
         data: stringToData(type, form.add.find('[name=data]').val()),
         ttl: form.add.find('[name=ttl]').val() | 0
