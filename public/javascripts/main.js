@@ -45,7 +45,7 @@
 
     buttons.modalLogin.button('loading');
     api('POST', '/signup', {
-      user: form.login.find('[name=user]').val(),
+      email: form.login.find('[name=email]').val(),
       password: form.login.find('[name=password]').val()
     }, {
       success: function(data) {
@@ -105,9 +105,11 @@
     e.preventDefault();
     form.add.find('input[type=submit]').button('loading');
     var type = form.add.find('[name=type]').val().toUpperCase();
+    var domain = form.add.find('[name=domain]').val();
     api('POST', '/dns', {
+      domain: tld(domain),
       records: [{
-        domain: form.add.find('[name=domain]').val(),
+        sub: domain.replace(tld(domain), ''),
         type: type,
         data: stringToData(type, form.add.find('[name=data]').val()),
         ttl: form.add.find('[name=ttl]').val() | 0
@@ -153,16 +155,16 @@
       return records.addClass('hidden');
 
     api('GET', '/dns', {
-      success: function(data) {
+      success: function(domains) {
         records.removeClass('hidden');
         $('#records-alert').addClass('hidden');
 
         // Remove all existing records
-        records.find('tr:not(:last):not(.new-record)').remove();
+        records.find('tr:not(.new-record)').remove();
 
         // Insert new
-        data.forEach(function(item) {
-          var subdomain = item.subdomain;
+        domains.forEach(function(item) {
+          var domain = item.domain;
           item.records.forEach(function(record) {
             var line = sample.clone();
 
@@ -170,8 +172,9 @@
             line.removeProp('id');
 
             // Fill fields
-            record.domain = subdomain;
-            line.find('.record-subdomain').text(subdomain);
+            line.find('.record-subdomain').text(
+              record.sub ? record.sub + '.' + domain : domain
+            );
             line.find('.record-type').text(record.type);
             line.find('.record-data').text(dataToString(record.type,
                                                         record.data));
@@ -179,6 +182,7 @@
             line.find('.record-remove').click(function(e) {
               e.preventDefault();
 
+              modal.remove.data('record-domain', domain);
               modal.remove.data('record', record);
             });
 
@@ -197,7 +201,10 @@
     e.preventDefault();
 
     buttons.modalRemove.button('loading');
-    api('DELETE', '/dns', { records: [modal.remove.data('record')] }, {
+    api('DELETE', '/dns', {
+      domain: modal.remove.data('record-domain'),
+      records: [modal.remove.data('record')]
+    }, {
       success: function() {
         modal.remove.find('.alert').addClass('hidden');
         modal.remove.modal('hide');
